@@ -1,0 +1,20 @@
+{
+  "name": "@korkje/match-on",
+  "private": false,
+  "repository": "https://github.com/korkje/match-on",
+  "version": "0.1.1",
+  "description": "",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "prePublishOnly": "tsc"
+  },
+  "files": [
+    "dist/"
+  ],
+  "author": "Ola Næss Kaldestad",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^3.5.1"
+  }
+}
