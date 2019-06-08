@@ -2,7 +2,7 @@
   "name": "@korkje/match-on",
   "private": false,
   "repository": "https://github.com/korkje/match-on",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
