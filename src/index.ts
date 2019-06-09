@@ -1,22 +1,17 @@
 type Primitive = bigint | boolean | null | number | string | symbol | undefined;
-type NotFunction = Primitive | { [key: string]: unknown; } | unknown[];
+type NotAFunction = Primitive | { [key: string]: unknown; } | unknown[];
 
-type Predictor<T> = (value: T) => boolean;
-type Predicate<T> = Predictor<T> | T;
+type Predicate<T> = ((value: T) => boolean) | T;
 
-type Result<T> = ((value: T) => unknown) | NotFunction;
+type Result<T> = ((value: T) => unknown) | NotAFunction;
 type ResultValue<T, U> = U extends ((value: T) => infer V) ? NoVoid<V> : U;
 type NoVoid<T> = T extends void ? undefined : T;
 
-class Match<T> {
+class Match<T extends NotAFunction> {
     constructor(private readonly value: T) { }
 
-    private isPredictor(pred: Predicate<T>): pred is Predictor<T> {
-        return typeof(pred) === 'function';
-    }
-
     private evaluate(pred: Predicate<T>) {
-        return this.isPredictor(pred)
+        return typeof pred === 'function'
             ? pred(this.value)
             : pred === this.value;
     }
@@ -66,7 +61,7 @@ class Defaulted<T> {
     }
 }
 
-function match<T>(value: T) {
+function match<T extends NotAFunction>(value: T) {
     return new Match(value);
 }
 
