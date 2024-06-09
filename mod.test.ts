@@ -1,4 +1,4 @@
-import { assert } from "@std/assert";
+import { assertEquals } from "@std/assert";
 import match from "./mod.ts";
 
 Deno.test("Simple", () => {
@@ -9,7 +9,7 @@ Deno.test("Simple", () => {
         .on("world", "b")
         .result();
 
-    assert(result === "a");
+    assertEquals(result, "a");
 });
 
 Deno.test("Advanced", () => {
@@ -20,7 +20,7 @@ Deno.test("Advanced", () => {
         .on(v => v === "world", () => "b")
         .result();
 
-    assert(result === "a");
+    assertEquals(result, "a");
 });
 
 Deno.test("Default value", () => {
@@ -31,5 +31,5 @@ Deno.test("Default value", () => {
         .default("a")
         .result();
 
-    assert(result === "a");
+    assertEquals(result, "a");
 });
