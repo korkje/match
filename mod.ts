@@ -8,9 +8,9 @@ type ResultValue<T, U> = U extends ((value: T) => infer V) ? NoVoid<V> : U;
 type NoVoid<T> = T extends void ? undefined : T;
 
 class Match<T extends NotAFunction> {
-    constructor(private readonly value: T) { }
+    constructor(private readonly value: T) {}
 
-    private evaluate(pred: Predicate<T>) {
+    private evaluate(pred: Predicate<T>): boolean {
         return typeof pred === 'function'
             ? pred(this.value)
             : pred === this.value;
@@ -22,17 +22,17 @@ class Match<T extends NotAFunction> {
             : res;
     }
 
-    on<U extends Result<T>>(pred: Predicate<T>, res: U) {
+    on<U extends Result<T>>(pred: Predicate<T>, res: U): Matched<ResultValue<T, U>> | this {
         return this.evaluate(pred)
             ? new Matched(this.createResult(res))
             : this;
     }
 
-    default<U extends Result<T>>(res: U) {
+    default<U extends Result<T>>(res: U): Defaulted<ResultValue<T, U>> {
         return new Defaulted(this.createResult(res));
     }
 
-    result() {
+    result(): undefined {
         return undefined;
     }
 }
@@ -40,15 +40,15 @@ class Match<T extends NotAFunction> {
 class Matched<T> {
     constructor(private readonly res: T) { }
 
-    on() {
+    on(): this {
         return this;
     }
 
-    default() {
+    default(): Defaulted<T> {
         return new Defaulted(this.res);
     }
 
-    result() {
+    result(): T {
         return this.res;
     }
 }
@@ -56,14 +56,16 @@ class Matched<T> {
 class Defaulted<T> {
     constructor(private readonly res: T) { }
 
-    result() {
+    result(): T {
         return this.res;
     }
 }
 
-function match<T extends NotAFunction>(value: T) {
+/**
+ * Creates a new 'Match' instance.
+ */
+export function match<T extends NotAFunction>(value: T): Match<T> {
     return new Match(value);
 }
 
 export default match;
-export { match };
